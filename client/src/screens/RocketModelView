@@ -1,0 +1,35 @@
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import ModelView from 'react-native-gl-model-view';
+
+const Native3DModel = () => {
+  return (
+    <View style={styles.container}>
+      <ModelView
+        model={{ uri: 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.obj' }}
+        texture={{ uri: 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.png' }}
+        scale={0.01}
+        translateZ={-2}
+        rotateX={0}
+        rotateY={0}
+        rotateZ={0}
+        style={styles.model}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#212121',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  model: {
+    width: 300,
+    height: 300,
+  },
+});
+
+export default Native3DModel;

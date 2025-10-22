@@ -6,4 +6,5 @@ export type RootStackParamList = {
   RegisterDesign: undefined;
   Settings: undefined;
   StartFlight: undefined;
+FlightMonitor: { flight: { id: string; title: string } };
 };

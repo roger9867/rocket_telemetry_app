@@ -10,6 +10,8 @@ import MainMenu from './src/screens/MainMenu';
 import FlightViewList from './src/screens/FlightViewList';
 import DesignViewList from './src/screens/DesignViewList';
 
+import FlightMonitor from './src/screens/FlightMonitor'; // ✅ Wichtig!
+
 import { RootStackParamList } from './src/navigation/types';  // Import des Typs
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -23,8 +25,12 @@ const App = () => {
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Login"
-          screenOptions={{ headerShown: false }}
-        >
+          screenOptions={{
+          headerShown: false,              // außerhalb von cardStyle
+          cardStyle: { backgroundColor: '#212121' }, // hier nur Styles rein
+          }}
+          >
+        
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="MainMenu" component={MainMenu} />
           <Stack.Screen
@@ -48,7 +54,19 @@ const App = () => {
               headerStyle: { backgroundColor: '#212121' },
               headerTitleAlign: 'center',
             }}
-          />
+            />
+            <Stack.Screen
+  name="FlightMonitor"
+  component={FlightMonitor}
+  options={{
+    headerShown: true,
+    title: 'Flight Monitor',
+    headerTintColor: '#fff',
+    headerStyle: { backgroundColor: '#212121' },
+    headerTitleAlign: 'center',
+  }}
+/>
+
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

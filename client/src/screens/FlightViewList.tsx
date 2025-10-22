@@ -1,5 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigation/types';
 
 const dummyFlights = [
   { id: '1', title: 'Flight A - 12.10.2025' },
@@ -18,7 +21,16 @@ const dummyFlights = [
   { id: '14', title: 'Flight N - 25.10.2025' },
 ];
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Flights'>;
+
 const FlightViewList: React.FC = () => {
+  const navigation = useNavigation<NavigationProp>();
+
+  const handleFlightPress = (flight: { id: string; title: string }) => {
+    navigation.navigate('FlightMonitor', { flight });
+
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Flüge</Text>
@@ -26,9 +38,9 @@ const FlightViewList: React.FC = () => {
         data={dummyFlights}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.flightItem}>
+          <TouchableOpacity onPress={() => handleFlightPress(item)} style={styles.flightItem}>
             <Text style={styles.flightText}>{item.title}</Text>
-          </View>
+          </TouchableOpacity>
         )}
         contentContainerStyle={styles.listContent}
       />
