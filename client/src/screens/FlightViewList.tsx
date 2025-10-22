@@ -9,12 +9,19 @@ const dummyFlights = [
   { id: '5', title: 'Flight E - 16.10.2025' },
   { id: '6', title: 'Flight F - 17.10.2025' },
   { id: '7', title: 'Flight G - 18.10.2025' },
+  { id: '8', title: 'Flight H - 19.10.2025' },
+  { id: '9', title: 'Flight I - 20.10.2025' },
+  { id: '10', title: 'Flight J - 21.10.2025' },
+  { id: '11', title: 'Flight K - 22.10.2025' },
+  { id: '12', title: 'Flight L - 23.10.2025' },
+  { id: '13', title: 'Flight M - 24.10.2025' },
+  { id: '14', title: 'Flight N - 25.10.2025' },
 ];
 
 const FlightViewList: React.FC = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Flight List</Text>
+      <Text style={styles.title}>Flüge</Text>
       <FlatList
         data={dummyFlights}
         keyExtractor={(item) => item.id}

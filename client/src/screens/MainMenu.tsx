@@ -1,8 +1,19 @@
 // src/screens/MainMenu.tsx
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+
+type RootStackParamList = {
+  Flights: undefined;
+  Designs: undefined;
+  RegisterDesign: undefined;
+  Settings: undefined;
+  StartFlight: undefined;
+};
 
 const MainMenu: React.FC = () => {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
   return (
     <View style={styles.container}>
 
@@ -13,19 +24,38 @@ const MainMenu: React.FC = () => {
 
       {/* Untere Box mit den Menüoptionen, Optionen vertikal und horizontal zentriert */}
       <View style={styles.menuBox}>
-        <TouchableOpacity style={styles.menuButton}>
+        <TouchableOpacity
+          style={styles.menuButton}
+          onPress={() => navigation.navigate('Flights')}
+        >
           <Text style={styles.menuText}>Flüge ansehen</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuButton}>
+
+        <TouchableOpacity
+          style={styles.menuButton}
+          onPress={() => navigation.navigate('Designs')}
+        >
           <Text style={styles.menuText}>Designs ansehen</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuButton}>
+
+        <TouchableOpacity
+          style={styles.menuButton}
+          onPress={() => navigation.navigate('RegisterDesign')}
+        >
           <Text style={styles.menuText}>Design registrieren</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuButton}>
+
+        <TouchableOpacity
+          style={styles.menuButton}
+          onPress={() => navigation.navigate('Settings')}
+        >
           <Text style={styles.menuText}>Einstellungen</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuButtonRed}>
+
+        <TouchableOpacity
+          style={styles.menuButtonRed}
+          onPress={() => navigation.navigate('StartFlight')}
+        >
           <Text style={styles.menuText}>Flug starten</Text>
         </TouchableOpacity>
       </View>
