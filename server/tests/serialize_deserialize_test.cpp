@@ -21,7 +21,6 @@ protected:
 };
 
 
-
 TEST(SerializeDeserializeTest, TEST_SERIALIZE_FLIGHTLOG) {
     std::shared_ptr<RocketDesign> design = std::make_shared<RocketDesign>(
         "design_test_id",
@@ -49,36 +48,28 @@ TEST(SerializeDeserializeTest, TEST_SERIALIZE_FLIGHTLOG) {
 }
 
 TEST(SerializeDeserializeTest, TEST_DESERIALIZE_FLIGHTLOG) {
-
-    // JSON-Daten simulieren
     Json flightlog = {
         {"id", "TEST_FLIGHTLOG_ID"},
         {"design_id", "design_test_id"},
         {"timestamp", "2025-12-01 16:12:14"}
     };
 
-    // FlightLogSerializable aus JSON deserialisieren
     FlightLogSerializable flight_log_serializable;
     flight_log_serializable.deserialize(flightlog);
 
-    // Erwartetes RocketDesign
     std::shared_ptr<RocketDesign> design = std::make_shared<RocketDesign>(
         "design_test_id",
         "design_test_name",
         "design_test_description"
     );
 
-    // Erwartetes FlightLogSerializable mit Timestamp als time_point
     std::unique_ptr<FlightLogSerializable> flightlog_expected = std::make_unique<FlightLogSerializable>(
         "TEST_FLIGHTLOG_ID",
         FlightLogService::string_to_timestamp("2025-12-01 16:12:14"),
         design
     );
 
-    // Vergleiche
     EXPECT_EQ(flight_log_serializable.log_id, flightlog_expected->log_id);
-
-    // timestamp als time_point vergleichen
     EXPECT_EQ(flight_log_serializable.timestamp, flightlog_expected->timestamp);
 
     // design überprüfen
@@ -86,4 +77,3 @@ TEST(SerializeDeserializeTest, TEST_DESERIALIZE_FLIGHTLOG) {
     //EXPECT_EQ(flight_log_serializable.design->name, "design_test_name");
     //EXPECT_EQ(flight_log_serializable.design->description, "design_test_description");
 }
-
