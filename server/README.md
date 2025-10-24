@@ -9,7 +9,7 @@ Dieses Repository enthält den Rocket Telemetry Server, die dazugehörigen Unit-
 mkdir -p build  
 cd build  
   
-cmake .. 
+cmake ..  
 make
 
 ### run server and test executables separately
