@@ -1,0 +1,48 @@
+# ==============================
+# IDE / Editor
+# ==============================
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# ==============================
+# Build / Debug
+# ==============================
+# Debug-Ordner ignorieren
+cmake-build-debug/
+debug/
+Debug/
+
+# CMake generierte Dateien (außer build/)
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Standard build output
+bin/
+*.o
+*.obj
+*.exe
+*.out
+*.app
+
+# ==============================
+# OS / Temp
+# ==============================
+*.swp
+*.DS_Store
+*.log
+*.tmp
+*.bak
+*.orig
+
+# ==============================
+# Test / Coverage (optional)
+# ==============================
+*.gcno
+*.gcda
+*.gcov
+coverage/
+

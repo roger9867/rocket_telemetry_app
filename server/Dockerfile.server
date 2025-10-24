@@ -1,0 +1,38 @@
+# --- Stage 1: Build ---
+FROM ubuntu:22.04 AS build
+
+# Build-Tools installieren
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Project files kopieren
+COPY CMakeLists.txt .
+COPY src/ ./src/
+COPY lib/ ./lib/
+COPY tests/ ./tests/
+
+# Build-Ordner
+RUN mkdir build
+WORKDIR /app/build
+
+# CMake und Build
+RUN cmake .. -DCMAKE_BUILD_TYPE=Release
+RUN cmake --build . --target rocket_server
+
+# --- Stage 2: Runtime ---
+FROM ubuntu:22.04
+WORKDIR /app
+
+# Kopiere nur das fertige executable
+COPY --from=build /app/build/bin/rocket_server .
+
+# Standard libs
+RUN apt-get update && apt-get install -y libstdc++6 && rm -rf /var/lib/apt/lists/*
+
+CMD ["./rocket_server"]
+

@@ -1,0 +1,39 @@
+# --- Stage 1: Build ---
+FROM ubuntu:22.04 AS build
+
+# Build-Tools
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Project files kopieren
+COPY CMakeLists.txt .
+COPY src/ ./src/
+COPY tests/ ./tests/
+COPY lib/ ./lib/
+COPY tests/ ./tests/
+
+RUN mkdir build
+WORKDIR /app/build
+
+# CMake & Build
+RUN cmake .. -DCMAKE_BUILD_TYPE=Debug
+RUN cmake --build . --target unit_tests
+
+# --- Stage 2: Test Runtime ---
+FROM ubuntu:22.04
+WORKDIR /app
+
+# Nur executable kopieren
+COPY --from=build /app/build/bin/unit_tests .
+
+# libs
+RUN apt-get update && apt-get install -y libstdc++6 && rm -rf /var/lib/apt/lists/*
+
+# Unit Tests laufen lassen
+CMD ["./unit_tests"]
+
