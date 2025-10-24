@@ -28,7 +28,11 @@ file(GLOB DOMAIN_SOURCES
         "src/domain/*.cpp"
         "src/domain/*.h"
 )
-add_library(domain ${DOMAIN_SOURCES})
+add_library(domain ${DOMAIN_SOURCES}
+        src/domain/rocket_design.cpp
+        src/domain/rocket_design.h
+        src/domain/flight_log.cpp
+        src/domain/flight_log.h)
 target_include_directories(domain PUBLIC "src/domain")
 
 # Infrastructure files
@@ -44,7 +48,9 @@ file(GLOB SERVICE_SOURCES
         "src/service/*.cpp"
         "src/service/*.h"
 )
-add_library(service ${SERVICE_SOURCES})
+add_library(service ${SERVICE_SOURCES}
+        src/service/flightlog_service.cpp
+        src/service/flightlog_service.h)
 target_include_directories(service PUBLIC "src/service")
 target_link_libraries(service PUBLIC domain infrastructure)
 
@@ -53,7 +59,39 @@ file(GLOB_RECURSE API_SOURCES
         "src/api/*.cpp"
         "src/api/*.hpp"
 )
-add_library(api ${API_SOURCES})
+
+# Zuerst die Library erstellen
+add_library(api ${API_SOURCES}
+        src/api/dto/json_serializable.h
+        src/api/controller/flight/flight_create_command.cpp
+        src/api/controller/flight/flight_create_command.h
+        src/api/controller/flight/flight_delete_command.cpp
+        src/api/controller/flight/flight_delete_command.h
+        src/api/controller/flight/flight_read_command.cpp
+        src/api/controller/flight/flight_read_command.h
+        src/api/controller/rocket_design/rocket_create_command.cpp
+        src/api/controller/rocket_design/rocket_create_command.h
+        src/api/controller/rocket_design/rocket_delete_command.cpp
+        src/api/controller/rocket_design/rocket_delete_command.h
+        src/api/controller/rocket_design/rocket_update_command.cpp
+        src/api/controller/rocket_design/rocket_update_command.h
+        src/api/controller/rocket_design/rocket_read_command.cpp
+        src/api/controller/rocket_design/rocket_read_command.h
+        src/api/controller/command_handler.h
+        src/api/controller/command_handler.cpp
+        src/api/controller/connection_handler.cpp
+        src/api/controller/connection_handler.h
+        src/api/dto/json_serializable.cpp
+        src/api/dto/flightlog_serializable.cpp
+        src/api/dto/flightlog_serializable.h)
+
+# Dann Include-Pfade setzen
+target_include_directories(api PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/lib/httplib
+        ${CMAKE_CURRENT_SOURCE_DIR}/lib
+)
+
+# Server executable bauen
 add_executable(rocket_server src/main.cpp)
 target_link_libraries(rocket_server PRIVATE api service domain infrastructure)
 

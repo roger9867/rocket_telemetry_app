@@ -4,7 +4,6 @@
 
 #ifndef CLIENT_H
 #define CLIENT_H
-
 #include <string>
 
 
@@ -13,6 +12,7 @@ class Client {
     std::string device_token;
     std::string device_platform;
 
+    Client() = default;
     Client(std::string token);
 };
 

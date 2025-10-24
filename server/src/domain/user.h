@@ -4,16 +4,13 @@
 
 #ifndef USER_H
 #define USER_H
-
 #include <string>
 #include <vector>
 #include <memory>
-
 #include "client.h"
 
 class User {
 public:
-
     std::string name;
     std::string email;
     std::string user_id;
@@ -21,7 +18,7 @@ public:
 
     std::vector<std::unique_ptr<Client>> clients;
 
-    User();
+    User() = default;
 
 };
 
