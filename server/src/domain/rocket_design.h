@@ -7,9 +7,12 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include "rocket_image.h"
 
 class FlightLog;
 class Flight;
+
+
 
 class RocketDesign {
 public:
@@ -18,10 +21,12 @@ public:
     std::string description;
 
     std::vector<std::shared_ptr<FlightLog>> flights = std::vector<std::shared_ptr<FlightLog>>();
+    std::vector<RocketImage> images;
 
     RocketDesign() = default;
     RocketDesign(std::string id, std::string design_name, std::string description);
 
+    void addImage(const RocketImage& image);
 };
 
 

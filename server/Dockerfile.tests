@@ -6,17 +6,20 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
     git \
+    libpqxx-dev \
+    libpq5 \
+    libstdc++6 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 # Project files kopieren
-COPY CMakeLists.txt .
+COPY CMakeLists.txt . 
 COPY src/ ./src/
 COPY tests/ ./tests/
 COPY lib/ ./lib/
-COPY tests/ ./tests/
 
+# Build-Ordner
 RUN mkdir build
 WORKDIR /app/build
 
@@ -24,16 +27,19 @@ WORKDIR /app/build
 RUN cmake .. -DCMAKE_BUILD_TYPE=Debug
 RUN cmake --build . --target unit_tests
 
-# --- Stage 2: Test Runtime ---
+# --- Stage 2: Runtime for Tests ---
 FROM ubuntu:22.04
 WORKDIR /app
 
-# Nur executable kopieren
+# Nur das Test-Executable kopieren
 COPY --from=build /app/build/bin/unit_tests .
 
-# libs
-RUN apt-get update && apt-get install -y libstdc++6 && rm -rf /var/lib/apt/lists/*
+# Runtime libs
+RUN apt-get update && apt-get install -y \
+    libpq5 \
+    libstdc++6 \
+    && rm -rf /var/lib/apt/lists/*
 
-# Unit Tests laufen lassen
+# Tests automatisch ausführen
 CMD ["./unit_tests"]
 

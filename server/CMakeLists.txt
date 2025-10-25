@@ -32,11 +32,13 @@ add_library(domain ${DOMAIN_SOURCES}
         src/domain/rocket_design.cpp
         src/domain/rocket_design.h
         src/domain/flight_log.cpp
-        src/domain/flight_log.h)
+        src/domain/flight_log.h
+        src/domain/rocket_image.h
+)
 target_include_directories(domain PUBLIC "src/domain")
 
 # Infrastructure files
-file(GLOB INFRA_SOURCES
+file(GLOB_RECURSE INFRA_SOURCES
         "src/infrastructure/*.cpp"
         "src/infrastructure/*.h"
 )
@@ -44,7 +46,7 @@ add_library(infrastructure ${INFRA_SOURCES})
 target_include_directories(infrastructure PUBLIC "src/infrastructure")
 
 # Service files
-file(GLOB SERVICE_SOURCES
+file(GLOB_RECURSE SERVICE_SOURCES
         "src/service/*.cpp"
         "src/service/*.h"
 )
@@ -83,7 +85,14 @@ add_library(api ${API_SOURCES}
         src/api/controller/connection_handler.h
         src/api/dto/json_serializable.cpp
         src/api/dto/flightlog_serializable.cpp
-        src/api/dto/flightlog_serializable.h)
+        src/api/dto/flightlog_serializable.h
+        src/infrastructure/persistence/db/postgres_database.cpp
+        src/infrastructure/persistence/db/postgres_database.h
+        src/infrastructure/persistence/repository/rocket_design_repository.cpp
+        src/infrastructure/persistence/repository/rocket_design_repository.h
+        src/infrastructure/persistence/repository/i_repository.h
+        src/api/dto/rocket_design_serializable.cpp
+        src/api/dto/rocket_design_serializable.h)
 
 # Dann Include-Pfade setzen
 target_include_directories(api PUBLIC
@@ -95,6 +104,23 @@ target_include_directories(api PUBLIC
 add_executable(rocket_server src/main.cpp)
 target_link_libraries(rocket_server PRIVATE api service domain infrastructure)
 
+#############################################################################
+# Libpqxx einbinden
+#############################################################################
+
+# pqxx (PostgreSQL) einbinden
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(LIBPQXX REQUIRED libpqxx)
+
+if(LIBPQXX_FOUND)
+    message(STATUS "Found libpqxx: ${LIBPQXX_LIBRARIES}")
+    target_include_directories(rocket_server PRIVATE ${LIBPQXX_INCLUDE_DIRS})
+    target_link_libraries(rocket_server PRIVATE ${LIBPQXX_LIBRARIES})
+else()
+    message(FATAL_ERROR "libpqxx not found!")
+endif()
+
+target_link_libraries(rocket_server PRIVATE uuid)
 
 
 ########################################################################################

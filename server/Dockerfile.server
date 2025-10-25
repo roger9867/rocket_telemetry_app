@@ -1,38 +1,56 @@
+#####################################################################################
 # --- Stage 1: Build ---
+#####################################################################################
 FROM ubuntu:22.04 AS build
 
-# Build-Tools installieren
+# Build-Tools und Dependencies installieren
 RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
     git \
-    && rm -rf /var/lib/apt/lists/*
+    libpqxx-dev \
+    libpq5 \
+    libstdc++6 \
+ && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Project files kopieren
+# Projektdateien kopieren
 COPY CMakeLists.txt .
 COPY src/ ./src/
 COPY lib/ ./lib/
 COPY tests/ ./tests/
+COPY sql/ ./sql/
 
-# Build-Ordner
+# Build-Verzeichnis erstellen
 RUN mkdir build
 WORKDIR /app/build
 
-# CMake und Build
+# CMake konfigurieren und Projekt bauen
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release
 RUN cmake --build . --target rocket_server
 
+#####################################################################################
 # --- Stage 2: Runtime ---
+#####################################################################################
 FROM ubuntu:22.04
 WORKDIR /app
 
-# Kopiere nur das fertige executable
+# Nur das fertige Executable und die SQL-Dateien kopieren
 COPY --from=build /app/build/bin/rocket_server .
+COPY --from=build /app/sql ./sql
 
-# Standard libs
-RUN apt-get update && apt-get install -y libstdc++6 && rm -rf /var/lib/apt/lists/*
+# Runtime-Abhängigkeiten (PostgreSQL client + C++ wrapper)
+RUN apt-get update && apt-get install -y \
+    libpq5 \
+    libpqxx-dev \
+    libstdc++6 \
+ && rm -rf /var/lib/apt/lists/*
 
+
+# (Optional) Cache für dynamische Bibliotheken aktualisieren
+RUN ldconfig
+
+# Start des Servers
 CMD ["./rocket_server"]
 

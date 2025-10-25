@@ -1,0 +1,4 @@
+# Dockerfile.emqx
+FROM emqx/emqx:latest
+# Optional: weitere Konfigurationen/Plugins
+

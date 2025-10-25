@@ -1,0 +1,32 @@
+services:
+  emqx:
+    build:
+      context: ./emqx       # relativ zu docker-compose.yml
+      dockerfile: Dockerfile.emqx
+    container_name: emqx
+    ports:
+      - "1883:1883"
+      - "8883:8883"
+      - "8083:8083"
+      - "18083:18083"
+    environment:
+      EMQX_ALLOW_ANONYMOUS: "true"
+      EMQX_DASHBOARD__DEFAULT_USER__LOGIN: "admin"
+      EMQX_DASHBOARD__DEFAULT_USER__PASSWORD: "secret"
+
+  postgres:
+    image: postgres:15
+    container_name: rocket-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: rocket_user
+      POSTGRES_PASSWORD: rocket_pass
+      POSTGRES_DB: rocket_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
