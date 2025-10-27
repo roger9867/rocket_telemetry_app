@@ -1,6 +1,6 @@
 # Rocket Telemetry Server
 
-Dieses Repository enthält den Rocket Telemetry Server, die dazugehörigen Unit-Tests und Dockerfiles für den Bau und die Ausführung.
+Dieses Repository enthält den RocketTelemetry Server, die dazugehörigen Unit-Tests und Dockerfiles für den Bau und die Ausführung.
 
 ---
 
