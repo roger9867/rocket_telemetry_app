@@ -13,11 +13,17 @@ class FlightLog {
 public:
     std::string log_id;
     Timestamp timestamp;
+    std::string video_url;
+
     std::shared_ptr<RocketDesign> design;
+
+    std::vector<TelemetryPoint> telemetry; // full flight telemetry
+
 
     FlightLog() = default;
     FlightLog(std::string log_id);
     FlightLog(std::string log_id, Timestamp timestamp, std::shared_ptr<RocketDesign> design);
+
 };
 
 #endif //FLIGHTLOG_H

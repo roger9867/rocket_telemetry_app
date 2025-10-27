@@ -34,6 +34,8 @@ add_library(domain ${DOMAIN_SOURCES}
         src/domain/flight_log.cpp
         src/domain/flight_log.h
         src/domain/rocket_image.h
+        src/domain/telemetry_point.cpp
+        src/domain/telemetry_point.h
 )
 target_include_directories(domain PUBLIC "src/domain")
 
@@ -92,7 +94,9 @@ add_library(api ${API_SOURCES}
         src/infrastructure/persistence/repository/rocket_design_repository.h
         src/infrastructure/persistence/repository/i_repository.h
         src/api/dto/rocket_design_serializable.cpp
-        src/api/dto/rocket_design_serializable.h)
+        src/api/dto/rocket_design_serializable.h
+        src/infrastructure/persistence/repository/flight_log_repository.cpp
+        src/infrastructure/persistence/repository/flight_log_repository.h)
 
 # Dann Include-Pfade setzen
 target_include_directories(api PUBLIC
